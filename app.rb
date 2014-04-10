@@ -4,10 +4,6 @@ require 'open-uri'
 require_relative 'lib/mdo-me.rb'
 
 class MdoMeApp < Sinatra::Application
-  configure do
-    `mkdir -p #{Dir.pwd}/tmp`
-  end
-
   get '/' do
     begin
       # Get the unescaped 'url' param
@@ -27,13 +23,10 @@ class MdoMeApp < Sinatra::Application
 
       # Maybe we have it already
       if result = MdoMe.already_correct(filename)
-        return File.read result
+        return result
       end
 
-      # Download the new file
-      puts `curl -v -o "#{Dir.pwd}/tmp/#{File.basename(url)}" "#{url}"`
-
-      File.read MdoMe.lean_into_it File.join(Dir.pwd, 'tmp', filename)
+      MdoMe.lean_into_it url
     rescue => e
       p e
       redirect 'http://blog.teamtreehouse.com/wp-content/uploads/2012/01/Bootstrap-from-Twitter.jpg'

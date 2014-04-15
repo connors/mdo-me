@@ -1,3 +1,3 @@
 # mdo me
 
-mdo, inventor of bootstrap.
+mdo, inventor of CSS.
